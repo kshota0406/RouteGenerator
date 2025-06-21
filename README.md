@@ -1,27 +1,27 @@
-# ルートプランナー
+# Route Generator
 
-Google Maps API を使用したルートURL生成ツールです。出発地、目的地、中継地点を入力して、Google Mapsで開けるURLを生成できます。
+Google Maps API を使用した高度なルートURL生成・共有ツールです。出発地、目的地、複数の経由地を設定し、その経路をURLとして保存・共有できます。
 
-## 機能
+## ✨ 主な機能
 
-- 🗺️ **Google Maps URL生成**: 選択した地点からGoogle Maps URLを自動生成
-- 🔍 **オートコンプリート**: Google Places API による地点入力の自動補完
-- 📍 **中継地点管理**: 動的に中継地点を追加・削除可能
-- 📱 **レスポンシブ対応**: モバイル・デスクトップ両対応
-- 📋 **クリップボードコピー**: 生成されたURLをワンクリックでコピー
-- 🔗 **直接開く**: 生成されたURLを新しいタブで開く
+- 🗺️ **Google Maps URL生成**: 選択した地点からGoogle Mapsで開けるURLを自動生成
+- 🔗 **経路の保存と共有**: 生成した経路をユニークなURLとして保存し、他者と共有可能
+- 💾 **URLからの経路復元**: 共有されたURLを開くだけで、経路が自動的に復元
+- 🔍 **オートコンプリート**: Google Places APIによる地点入力の強力な自動補完
+- 📍 **ドラッグ＆ドロップ**: ドラッグ＆ドロップで経由地の順番を直感的に並べ替え
+- 📱 **レスポンシブ対応**: モバイル・デスクトップ両対応の滑らかなUI
+- 🎨 **クールなUI**: ホログラム調のエフェクトを取り入れたモダンなデザイン
 
-## 技術スタック
+## 🛠️ 技術スタック
 
-- **フレームワーク**: Next.js 15.3.4 (App Router)
+- **フレームワーク**: Next.js (App Router)
 - **言語**: TypeScript
-- **スタイリング**: Tailwind CSS v4
-- **地図API**: Google Maps JavaScript SDK
-- **オートコンプリート**: Google Places API
-- **状態管理**: useState + Jotai
+- **スタイリング**: Tailwind CSS
+- **状態管理**: Jotai
+- **地図・場所API**: Google Maps JavaScript SDK, Google Places API
 - **パッケージマネージャー**: pnpm
 
-## セットアップ
+## 🚀 セットアップ
 
 ### 1. 依存関係のインストール
 
@@ -31,16 +31,16 @@ pnpm install
 
 ### 2. 環境変数の設定
 
-`.env.local` ファイルを作成し、以下の環境変数を設定してください：
+プロジェクトルートに `.env.local` ファイルを作成し、Google Maps APIキーを設定します。
 
 ```env
 # Google Maps API Key
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="your_google_maps_api_key_here"
 ```
 
-### 3. Google Maps API の設定
+### 3. Google Maps API の有効化
 
-以下のAPIを有効にしてください：
+Google Cloud Consoleで、以下のAPIを有効にしてください：
 
 1. **Maps JavaScript API** - 地図表示用
 2. **Places API** - オートコンプリート用
@@ -53,101 +53,60 @@ pnpm dev
 
 アプリケーションは [http://localhost:3000](http://localhost:3000) で起動します。
 
-## 使用方法
+## 使い方
 
 ### 基本的なルート設定
 
-1. **出発地を入力**: オートコンプリート機能で地点を選択
-2. **中継地点を追加** (オプション): 「+ 中継地点を追加」ボタンで追加
-3. **目的地を入力**: 同様にオートコンプリートで選択
-4. **URLを生成**: 「Google Maps URLを生成」ボタンをクリック
+1. **出発地を入力**: オートコンプリート機能で地点を選択します。
+2. **経由地を追加** (オプション): 「+ 経由地を追加」ボタンで経由地を追加（最大10ヶ所）。
+3. **目的地を入力**: 同様にオートコンプリートで選択します。
+4. **順番を並べ替え**: ドラッグ＆ドロップで経由地の順番を変更できます。
 
-### 中継地点の管理
+### 経路の共有と利用
 
-- **追加**: 「+ 中継地点を追加」ボタンで中継地点を追加
-- **削除**: 各中継地点の削除ボタンで削除
-- **編集**: 入力フィールドを直接編集可能
+- **経路をシェア**: 「経路をシェア」ボタンをクリックすると、現在の経路情報を含んだURLがクリップボードにコピーされます。
+- **Google Mapで見る**: 「Google Mapで経路を見る」ボタンで、設定したルートをGoogle Mapsで開きます。
+- **リセット**: 「リセット」ボタンで、すべての入力情報をクリアできます。
 
-### 生成されたURLの利用
+## 🔄 シェア機能の仕組み
 
-- **コピー**: 「コピー」ボタンでURLをクリップボードにコピー
-- **開く**: 「開く」ボタンでGoogle Mapsでルートを表示
+経路情報は、以下のプロセスでURLにエンコード・デコードされます。
 
-## プロジェクト構造
+1. **データ圧縮**: 出発地、目的地、経由地の情報を、キー名を短縮するなどして軽量化。
+2. **JSON化**: 圧縮したデータをJSON文字列に変換。
+3. **Base64エンコード**: UTF-8対応のBase64でエンコードし、URLセーフな文字列に。
+4. **URL生成**: `?route=[エンコードされたデータ]` の形式でURLを生成。
+
+このURLにアクセスすると、逆のプロセスでデータが復元され、経路が画面に表示されます。
+
+## 📁 プロジェクト構造
 
 ```
 src/
 ├── app/
-│   ├── globals.css               # グローバルスタイル
-│   ├── layout.tsx                # レイアウト
-│   └── page.tsx                  # メインページ
+│   ├── layout.tsx         # 全体のレイアウト（Header, Footer）
+│   └── page.tsx           # メインページ
 ├── components/
-│   └── PlaceInput.tsx            # 地点入力コンポーネント
+│   ├── Header.tsx         # ヘッダーコンポーネント
+│   ├── Footer.tsx         # フッターコンポーネント
+│   ├── GoogleCredit.tsx   # Googleクレジット表記
+│   ├── PlaceInput.tsx     # 地点入力コンポーネント
+│   └── ShareButtons.tsx   # シェアボタン
 └── lib/
-    └── mapsUrl.ts                # URL生成ロジック
+    ├── mapsUrl.ts         # Google Maps URL生成ロジック
+    ├── routeSharing.ts    # 経路のエンコード/デコードロジック
+    └── store.ts           # Jotaiによる状態管理
 ```
 
-## 生成されるURL形式
-
-```
-https://www.google.com/maps/dir/?api=1
-&origin=lat,lng
-&destination=lat,lng
-&waypoints=lat1,lng1|lat2,lng2|...
-&travelmode=driving
-```
-
-## API 制限と注意事項
-
-### Google Maps API 制限
-
-- **Maps JavaScript API**: 月間25,000回の読み込み
-- **Places API**: 月間28,500回のリクエスト
-
-### 料金
-
-- Google Maps Platform の料金体系に従います
-- 詳細は [Google Maps Platform 料金](https://developers.google.com/maps/pricing) を確認してください
-
-### ベストプラクティス
-
-1. **APIキーの保護**: 環境変数で管理し、クライアントサイドに露出しない
-2. **エラーハンドリング**: API制限やネットワークエラーへの対応
-3. **ユーザビリティ**: ローディング状態とエラー表示の適切な実装
-
-## 開発
-
-### ビルド
-
-```bash
-pnpm build
-```
-
-### 本番起動
-
-```bash
-pnpm start
-```
-
-### リント
-
-```bash
-pnpm lint
-```
-
-## ライセンス
+## 📜 ライセンス
 
 このプロジェクトは MIT ライセンスの下で公開されています。
 
-## 貢献
+## 🙏 貢献
 
 プルリクエストやイシューの報告を歓迎します。
 
-## サポート
+## 💡 注意事項
 
-問題が発生した場合は、以下を確認してください：
-
-1. APIキーが正しく設定されているか
-2. 必要なAPIが有効になっているか
-3. 環境変数が正しく読み込まれているか
-4. ネットワーク接続が安定しているか
+- Google Maps Platformの利用には料金が発生する場合があります。詳細は[公式の料金ページ](https://developers.google.com/maps/pricing)を確認してください。
+- APIキーの管理には十分注意してください。
