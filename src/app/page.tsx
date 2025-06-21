@@ -21,7 +21,6 @@ import { generateGoogleMapsUrl, isValidRoute } from '@/lib/mapsUrl';
 import { MAX_WAYPOINTS } from '@/lib/store';
 import SortablePlaceInput from '@/components/SortablePlaceInput';
 import ShareButtons from '@/components/ShareButtons';
-import GoogleCredit from '@/components/GoogleCredit';
 
 const AppContent: React.FC = () => {
   const {

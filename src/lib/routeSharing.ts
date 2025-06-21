@@ -44,10 +44,23 @@ function base64ToUtf8(base64: string): string {
   }
 }
 
+interface CompressedPlace {
+  n: string;
+  id: string;
+  lat: number;
+  lng: number;
+}
+
+interface CompressedRouteData {
+  o: CompressedPlace | null;
+  d: CompressedPlace | null;
+  w: CompressedPlace[];
+}
+
 /**
  * 経路データを圧縮する
  */
-function compressRouteData(routeData: RouteData): any {
+function compressRouteData(routeData: RouteData): CompressedRouteData {
   return {
     o: routeData.origin ? {
       n: routeData.origin.name,
@@ -73,7 +86,7 @@ function compressRouteData(routeData: RouteData): any {
 /**
  * 圧縮された経路データを展開する
  */
-function decompressRouteData(compressed: any): RouteData {
+function decompressRouteData(compressed: CompressedRouteData): RouteData {
   return {
     origin: compressed.o ? {
       name: compressed.o.n,
@@ -87,7 +100,7 @@ function decompressRouteData(compressed: any): RouteData {
       lat: compressed.d.lat,
       lng: compressed.d.lng,
     } : null,
-    waypoints: compressed.w.map((wp: any) => ({
+    waypoints: compressed.w.map((wp: CompressedPlace) => ({
       name: wp.n,
       placeId: wp.id,
       lat: wp.lat,
@@ -137,7 +150,7 @@ export function decodeRouteFromUrl(): RouteData | null {
     const padded = padding === 4 ? paddedParam : paddedParam + '='.repeat(padding);
     
     const decodedData = base64ToUtf8(padded);
-    const compressedData = JSON.parse(decodedData);
+    const compressedData: CompressedRouteData = JSON.parse(decodedData);
     return decompressRouteData(compressedData);
   } catch (error) {
     console.error('Failed to decode route data:', error);
