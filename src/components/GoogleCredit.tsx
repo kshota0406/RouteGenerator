@@ -2,11 +2,12 @@ import React from 'react';
 
 const GoogleCredit: React.FC = () => {
   return (
-    <div className="text-center text-gray-500">
-      <p className="text-[10px] leading-tight mb-1">
-        このアプリは Google Maps および Places API を使用しています。
+    <div className="flex items-center justify-center space-x-2">
+      <p className="text-[10px] text-gray-400">
+        This app uses Google Maps & Places API.
       </p>
-      <p className="text-xs">
+      <span className="text-gray-600">|</span>
+      <p className="text-[10px] text-gray-400">
         ©{new Date().getFullYear()} Google
       </p>
     </div>
