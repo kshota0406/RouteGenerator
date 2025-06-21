@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="ja">
       <body className="bg-gray-800">
         <Header />
-        <main className="pt-16 pb-16">
+        <main className="pt-14 pb-16">
           {children}
         </main>
         <Footer />
