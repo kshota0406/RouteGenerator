@@ -88,7 +88,7 @@ const SortablePlaceInput: React.FC<SortablePlaceInputProps> = ({
         <button
           type="button"
           onClick={onRemove}
-          className="absolute top-0 right-0 p-1 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full transition-colors z-10"
+          className="absolute top-0 right-0 p-1 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full transition-colors z-5"
           aria-label="Remove waypoint"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
