@@ -20,6 +20,7 @@ import { usePlaces } from '@/hooks/usePlaces';
 import { generateGoogleMapsUrl, isValidRoute } from '@/lib/mapsUrl';
 import { MAX_WAYPOINTS } from '@/lib/store';
 import SortablePlaceInput from '@/components/SortablePlaceInput';
+import ShareButtons from '@/components/ShareButtons';
 
 const AppContent: React.FC = () => {
   const {
@@ -31,6 +32,7 @@ const AppContent: React.FC = () => {
     addWaypoint,
     removeWaypoint,
     handleDragEnd,
+    resetPlaces,
   } = usePlaces();
 
   const [areAllDetailsVisible, setAreAllDetailsVisible] = useState(true);
@@ -62,6 +64,7 @@ const AppContent: React.FC = () => {
 
   const canSubmit = isValidRoute(places);
   const placeIds = places.map(p => p.id);
+  const hasRoute = places.some(p => p.place);
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -73,14 +76,25 @@ const AppContent: React.FC = () => {
         </header>
 
         <main className="bg-white p-2 rounded-xl shadow-lg">
-          <div className="flex justify-end mb-2">
+          <div className="flex justify-between items-center mb-2">
+            <div className="flex gap-2">
               <button
                 onClick={handleToggleAllDetails}
                 className="px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200"
               >
                 {areAllDetailsVisible ? 'すべて閉じる' : 'すべて展開'}
               </button>
+              {hasRoute && (
+                <button
+                  onClick={resetPlaces}
+                  className="px-3 py-1 text-xs font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100"
+                >
+                  リセット
+                </button>
+              )}
+            </div>
           </div>
+          
           <form onSubmit={handleSubmit} className="space-y-4">
             {isClient && (
               <DndContext
@@ -130,16 +144,26 @@ const AppContent: React.FC = () => {
             )}
 
             <div className="pt-4">
-              <button
-                type="submit"
-                disabled={!canSubmit}
-                className="w-full flex items-center justify-center px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300"
-              >
-                Google Mapで経路を見る
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </button>
+              <div className="flex gap-3">
+                <button
+                  type="submit"
+                  disabled={!canSubmit}
+                  className="w-1/2 flex items-center justify-center px-4 py-2 text-sm text-center font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300"
+                >
+                  <span className="leading-tight">
+                    Google Mapで
+                    <br />
+                    経路を見る
+                  </span>
+                  <svg className="w-4 h-4 ml-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </button>
+                
+                {hasRoute && (
+                  <ShareButtons />
+                )}
+              </div>
             </div>
           </form>
         </main>

@@ -11,7 +11,7 @@ export interface DraggablePlace {
   isDetailsVisible: boolean; // 詳細表示の状態
 }
 
-const initialPlaces: DraggablePlace[] = [
+export const initialPlaces: DraggablePlace[] = [
   {
     id: 'origin-0', // 静的なIDに変更
     place: null,
