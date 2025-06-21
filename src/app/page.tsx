@@ -70,12 +70,6 @@ const AppContent: React.FC = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="max-w-2xl mx-auto px-2 py-4">
-        <header className="text-center mb-2">
-          <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-pink-500 to-purple-600 animate-hologram pb-4">
-            Route Generator
-          </h1>
-        </header>
-
         <main className="bg-white p-2 rounded-xl shadow-lg">
           <div className="flex justify-between items-center mb-2">
             <div className="flex gap-2">
@@ -168,10 +162,6 @@ const AppContent: React.FC = () => {
             </div>
           </form>
         </main>
-
-        <footer className="text-center mt-4">
-          <GoogleCredit />
-        </footer>
       </div>
     </div>
   );

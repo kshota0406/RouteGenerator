@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Route Generator",
@@ -13,7 +15,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body className="bg-gray-800">
+        <Header />
+        <main className="pt-16 pb-16">
+          {children}
+        </main>
+        <Footer />
+      </body>
     </html>
   );
 }
