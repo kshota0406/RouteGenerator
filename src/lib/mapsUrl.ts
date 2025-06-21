@@ -51,8 +51,10 @@ export function generateGoogleMapsUrl(places: DraggablePlace[]): string | null {
 
   // 基本パラメータ
   params.append('api', '1');
-  params.append('origin', `${origin.lat},${origin.lng}`);
-  params.append('destination', `${destination.lat},${destination.lng}`);
+  params.append('origin', origin.name);
+  params.append('origin_place_id', origin.placeId);
+  params.append('destination', destination.name);
+  params.append('destination_place_id', destination.placeId);
   params.append('travelmode', 'driving');
 
   // 中継地点がある場合は追加
@@ -62,10 +64,10 @@ export function generateGoogleMapsUrl(places: DraggablePlace[]): string | null {
       .filter((place): place is Place => place !== null);
       
     if (validWaypoints.length > 0) {
-      const waypointString = validWaypoints
-        .map(waypoint => `${waypoint.lat},${waypoint.lng}`)
-        .join('|');
-      params.append('waypoints', waypointString);
+      const waypointNames = validWaypoints.map(waypoint => waypoint.name).join('|');
+      const waypointPlaceIds = validWaypoints.map(waypoint => waypoint.placeId).join('|');
+      params.append('waypoints', waypointNames);
+      params.append('waypoint_place_ids', waypointPlaceIds);
     }
   }
 
